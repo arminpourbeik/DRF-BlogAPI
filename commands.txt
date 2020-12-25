@@ -1,0 +1,3 @@
+py manage.py makemigrations --dry-run --verbosity 3
+coverage run --omit='*/env/*' manage.py test
+coverage html
