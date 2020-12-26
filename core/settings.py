@@ -121,5 +121,7 @@ CORS_ALLOWED_ORIGINS = [
 
 
 REST_FRAMEWORK = {
-    "DEFAULT_PERMESSION_CLASSES": ("rest_framework.permissions.AllowAny",)
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ]
 }
