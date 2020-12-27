@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.utils import timezone
 
 
@@ -38,7 +38,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=250, unique_for_date="published")
     published = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(
-        to=User,
+        to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="blog_posts",
     )
@@ -47,6 +47,7 @@ class Post(models.Model):
         choices=OPTIONS,
         default="published",
     )
+
     objects = models.Manager()  # Default manager
     post_objects = PostObjects()  # Custom manager
 

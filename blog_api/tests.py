@@ -1,4 +1,3 @@
-from django.test import client
 from django.urls import reverse
 from django.contrib.auth.models import User
 
@@ -37,7 +36,7 @@ class PostTest(APITestCase):
 
     def test_post_update(self):
         """
-        Ensure a user can
+        Ensure a user can update their own post
         """
 
         self.test_category = Category.objects.create(name="django")
@@ -62,7 +61,9 @@ class PostTest(APITestCase):
         )
         self.client.login(username=self.test_user1.username, password="123456")
 
-        url = reverse("blog_api:detailcreate", kwargs={"pk": 1})
+        post_id = Post.objects.get()
+
+        url = reverse("blog_api:detailcreate", kwargs={"pk": post_id.id})
         response = self.client.put(
             url,
             {
@@ -74,5 +75,4 @@ class PostTest(APITestCase):
             },
             format="json",
         )
-        print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
