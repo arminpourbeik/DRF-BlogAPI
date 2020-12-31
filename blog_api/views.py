@@ -1,4 +1,5 @@
 from rest_framework import generics
+from rest_framework import permissions
 from rest_framework.generics import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -54,9 +55,7 @@ class PostDetail(generics.RetrieveAPIView):
     permission_classes = (PostUserWritePermission,)
     queryset = Post.objects.all()
 
-    # def get_queryset(self):
-    #     slug = self.request.query_params.get("slug", None)
-    #     return Post.objects.filter(slug=slug)
+    lookup_field = "slug"
 
 
 class PostListDetailFilter(generics.ListAPIView):
@@ -64,3 +63,27 @@ class PostListDetailFilter(generics.ListAPIView):
     serializer_class = PostSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ["^slug"]
+
+
+class CreatePost(generics.CreateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
+
+
+class AdminPostDetail(generics.RetrieveAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
+
+
+class EditPost(generics.UpdateAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
+
+
+class DeletePost(generics.RetrieveDestroyAPIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
